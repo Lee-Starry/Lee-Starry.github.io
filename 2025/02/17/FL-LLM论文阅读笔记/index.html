@@ -4,13 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>Starry的小屋</title>
+  <title>FL-LLM-FedPepTAO | Starry的小屋</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Starry的小屋">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="Federated Learning of Large Language Models with Parameter-Efficient Prompt Tuning and Adaptive Optimization基于高效参数调整的prompt训练和自适应优化的大型语言模型的联邦学习针对利用联邦学习的方法进行大语言模型训练时庞大的通信成本和数据不独立同分布带来的客户端漂移问题，提出一种能够自适应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FL-LLM-FedPepTAO">
+<meta property="og:url" content="http://example.com/2025/02/17/FL-LLM%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Starry的小屋">
+<meta property="og:description" content="Federated Learning of Large Language Models with Parameter-Efficient Prompt Tuning and Adaptive Optimization基于高效参数调整的prompt训练和自适应优化的大型语言模型的联邦学习针对利用联邦学习的方法进行大语言模型训练时庞大的通信成本和数据不独立同分布带来的客户端漂移问题，提出一种能够自适应">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-17T05:38:42.000Z">
+<meta property="article:modified_time" content="2025-02-17T14:40:54.072Z">
 <meta property="article:author" content="Starry">
 <meta name="twitter:card" content="summary">
   
@@ -67,9 +71,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-FL-LLM论文阅读笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-FL-LLM论文阅读笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/02/17/FL-LLM%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" class="article-date">
   <time class="dt-published" datetime="2025-02-17T05:38:42.000Z" itemprop="datePublished">2025-02-17</time>
@@ -86,8 +88,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/02/17/FL-LLM%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">FL-LLM-FedPepTAO</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      FL-LLM-FedPepTAO
     </h1>
   
 
@@ -96,11 +98,27 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h2 id="Federated-Learning-of-Large-Language-Models-with-Parameter-Efficient-Prompt-Tuning-and-Adaptive-Optimization"><a href="#Federated-Learning-of-Large-Language-Models-with-Parameter-Efficient-Prompt-Tuning-and-Adaptive-Optimization" class="headerlink" title="Federated Learning of Large Language Models with Parameter-Efficient Prompt Tuning and Adaptive Optimization"></a>Federated Learning of Large Language Models with Parameter-Efficient Prompt Tuning and Adaptive Optimization</h2><h2 id="基于高效参数调整的prompt训练和自适应优化的大型语言模型的联邦学习"><a href="#基于高效参数调整的prompt训练和自适应优化的大型语言模型的联邦学习" class="headerlink" title="基于高效参数调整的prompt训练和自适应优化的大型语言模型的联邦学习"></a>基于高效参数调整的prompt训练和自适应优化的大型语言模型的联邦学习</h2><p>针对利用联邦学习的方法进行大语言模型训练时<strong>庞大的通信成本</strong>和数据不独立同分布带来的<strong>客户端漂移问题</strong>，提出一种能够自适应优化的有效微调方式<strong>FedPepTAO</strong></p>
-        
-          <p class="article-more-link">
-            <a href="/2025/02/17/FL-LLM%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#more">Read More</a>
-          </p>
-        
+<span id="more"></span>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li>LLM重要参数的更新限制了使用FL进行LLM训练的可行性</li>
+<li>Prompt优化可以显著减少LLM训练中更新的参数数量，但也会造成性能退化或训练效率降低</li>
+<li>在FL上直接使用prompt优化会造成显著的通信成本增加和性能降低</li>
+<li>分散保存的数据往往不是独立同分布的，因此会出现客户端漂移问题(client drift problems)并造成不好的表现</li>
+<li>直接应用自适应最优化的方法可能会导致训练过程中的收敛性问题</li>
+<li>在单个方面的自适应优化的应用可能对应于较差的性能</li>
+<li>当双方都利用自适应优化时可能会产生沉重的通信成本</li>
+</ol>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>一种带有自适应优化的有效提示微调方法<strong>FedPepTAO</strong></p>
+<ol>
+<li>一种高效的参数更新方法，根据每层的重要性来选择合适的提示层进行参数传递，以减少在所有提示层中传递整套参数带来的沉重的通信成本</li>
+<li>一种评分方法，根据该层对最终收敛精度的调优影响来识别每一层的重要性。</li>
+<li>一种在服务器端和设备端的自适应优化方法，对每个设备进行控制措施，以达到极好的精度</li>
+</ol>
+<h2 id="词语解释"><a href="#词语解释" class="headerlink" title="词语解释"></a>词语解释</h2><h3 id="discrete-space（离散空间）"><a href="#discrete-space（离散空间）" class="headerlink" title="discrete space（离散空间）"></a>discrete space（离散空间）</h3><p>在提示微调的上下文中，离散空间可能指的是对提示进行调整或优化时所涉及的一系列离散的、有限的选项或状态。例如，当对提示中的词汇进行选择或调整时，可使用的词汇集合是有限的、离散的，而不是连续变化的。这意味着在优化过程中，模型需要在有限个可能的词汇中进行选择，以找到最优的组合来引导大语言模型生成更好的输出。这种离散性使得搜索空间变得可管理，但也带来了一定的挑战，因为如何在巨大的离散空间中找到最优解是一个复杂的问题。</p>
+<h3 id="continuous-prompts（连续提示）"><a href="#continuous-prompts（连续提示）" class="headerlink" title="continuous prompts（连续提示）"></a>continuous prompts（连续提示）</h3><p>连续提示的概念相对较新，它试图将提示从传统的离散形式扩展到连续空间。在一些研究中，提出了使用连续表示的提示，例如通过学习一个连续的向量来表示提示，而不是仅仅依赖于离散的词汇序列。这种方法认为，连续的表示可以更灵活地捕捉提示的含义和上下文信息，从而有可能提高模型的性能和泛化能力。然而，在联邦学习的大语言模型训练中，直接应用连续提示可能会面临一些困难，如如何在不同的客户端之间有效地共享和同步连续的提示表示等。</p>
+<h3 id="client-drift-problem（客户端漂移问题）"><a href="#client-drift-problem（客户端漂移问题）" class="headerlink" title="client drift problem（客户端漂移问题）"></a>client drift problem（客户端漂移问题）</h3><p>在联邦学习过程中，由于各客户端的数据分布不一致（即数据非独立同分布，non-IID），导致不同客户端在本地模型训练时，模型参数的更新方向和程度出现差异，进而使得全局模型在聚合时难以收敛到最优解的现象。</p>
+
       
     </div>
     <footer class="article-footer">
@@ -111,143 +129,19 @@
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-密码学基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/01/20/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/" class="article-date">
-  <time class="dt-published" datetime="2025-01-20T14:42:37.000Z" itemprop="datePublished">2025-01-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/01/20/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/">密码学基础</a>
-    </h1>
+    <a href="/2025/01/20/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">密码学基础</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/01/20/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/" data-id="cm655pmqv0004qo1haeuyazd0" data-title="密码学基础" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-
-  
-    <article id="post-opengauss数据库配置及使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/01/20/opengauss%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time class="dt-published" datetime="2025-01-20T14:05:33.000Z" itemprop="datePublished">2025-01-20</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/01/20/opengauss%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/">opengauss数据库配置及使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="版本信息"><a href="#版本信息" class="headerlink" title="版本信息"></a>版本信息</h2><p>openEuler20.03LTS<br>openGauss6.0.0</p>
-        
-          <p class="article-more-link">
-            <a href="/2025/01/20/opengauss%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/01/20/opengauss%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/" data-id="cm655pmqk0001qo1hb5wwe4sk" data-title="opengauss数据库配置及使用" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-blog相关" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/01/20/blog%E7%9B%B8%E5%85%B3/" class="article-date">
-  <time class="dt-published" datetime="2025-01-20T10:50:14.000Z" itemprop="datePublished">2025-01-20</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">常用命令</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/01/20/blog%E7%9B%B8%E5%85%B3/">blog相关</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>这篇文章主要储存管理blog的相关指令</p>
-        
-          <p class="article-more-link">
-            <a href="/2025/01/20/blog%E7%9B%B8%E5%85%B3/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/01/20/blog%E7%9B%B8%E5%85%B3/" data-id="cm655pmqw0005qo1hgi5tfx2r" data-title="blog相关" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
 </section>
